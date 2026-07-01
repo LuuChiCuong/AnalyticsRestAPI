@@ -1,0 +1,25 @@
+Viết một chương trình đơn giản dùng docker compose theo yêu cầu sau:
+1. Có 3 service lần lượt là myysqldb, analytics, và đashboard
+2. myysqldb chạy Mysql, analytics, và đashboard chạy bắng Python 
+3. myysqldb có bảng sales với các field: date, productname, quantity. Có 100 record với ba loại sản phẩm, thời gian trong 10 ngày. Dữ liệu được tạo giả lập.
+4.  analytics truy cập myysqldb vào bảng sales và tính trung bình mỗi sản phẩm (producname) được bán theo ngày, tổng mỗi sản phẩm (quantity theo producname)
+5. Kết quả tính toán cửa aânlytics trả về dưới dạng dataframe của pandas
+6. dashboard nhận kết quả của aânlytics thông qua REST API và xuất ra màn hình
+
+Cấu trúc thư mục
+project/
+│
+├── docker-compose.yml
+│
+├── mysql/
+│   └── init.sql
+│
+├── analytics/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+│
+└── dashboard/
+    ├── Dockerfile
+    ├── requirements.txt
+    └── app.py

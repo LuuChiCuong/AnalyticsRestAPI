@@ -1,0 +1,31 @@
+# include:
+#   - mysql/docker-compose.mysql.yml
+#   - analytics/docker-compose.analytics.yml
+#   - dashboard/docker-compose.dashboard.yml
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: salesdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  analytics:
+    build: ./analytics
+    depends_on:
+      - mysqldb
+    ports:
+      - "5000:5000"
+
+  dashboard:
+    build: ./dashboard
+    depends_on:
+      - analytics
+    ports:
+      - "8000:8000"
