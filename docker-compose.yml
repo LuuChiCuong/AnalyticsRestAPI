@@ -4,10 +4,10 @@
 #   - dashboard/docker-compose.dashboard.yml
 
 services:
-  mysqldb:
+
+  myysqldb:
     image: mysql:8.0
-    container_name: mysqldb
-    restart: always
+    container_name: myysqldb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: salesdb
@@ -19,7 +19,7 @@ services:
   analytics:
     build: ./analytics
     depends_on:
-      - mysqldb
+      - myysqldb
     ports:
       - "5000:5000"
 

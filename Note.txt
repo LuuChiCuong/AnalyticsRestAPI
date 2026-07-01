@@ -1,35 +1,68 @@
 Viết một chương trình đơn giản dùng docker compose theo yêu cầu sau:
 1. Có 3 service lần lượt là myysqldb, analytics, và đashboard
 2. myysqldb chạy Mysql, analytics, và đashboard chạy bắng Python 
-3. myysqldb có bảng sales với các field: date, productname, quantity. Có 100 record với ba loại sản phẩm, thời gian trong 10 ngày. Dữ liệu được tạo giả lập.
+3. myysqldb có bảng sales với các field: saledate, productname, quantity. Có 100 record với ba loại sản phẩm, thời gian trong 10 ngày. Dữ liệu được tạo giả lập.
 4.  analytics truy cập myysqldb vào bảng sales và tính trung bình mỗi sản phẩm (producname) được bán theo ngày, tổng mỗi sản phẩm (quantity theo producname)
-5. Kết quả tính toán cửa aânlytics trả về dưới dạng dataframe của pandas
-6. dashboard nhận kết quả của aânlytics thông qua REST API và xuất ra màn hình
-
-Cấu trúc thư mục
+5. Kết quả tính toán cửa analytics trả về dưới dạng dataframe của pandas
+6. dashboard nhận kết quả của analytics thông qua REST API và xuất ra màn hình
+7. dashboard vẽ đồ thị line chart các sản phẩm theo ngày trên cùng 1 biểu đồ
 
 Write a simple program using Docker Compose to meet the following requirements:
 1. There are three services: myysqldb, analytics, and dashboard.
 2. myysqldb runs in MySQL, analytics, and dashboard run in Python.
-3. myysqldb has a sales table with fields: date, productname, and quantity. There are 100 records for three product types, covering a 10-day period. The data is simulated.
+3. myysqldb has a sales table with fields: saledate, productname, and quantity. There are 100 records for three product types, covering a 10-day period. The data is simulated.
 4. analytics accesses myysqldb's sales table and calculates the average daily sales per product (productname) and the total sales per product (quantity by productname).
 5. The analytics calculation results are returned as a pandas dataframe.
 6. Dashboard receives the analytics results via a REST API and outputs them to the screen.
+7. The dashboard displays line charts of products by day on a single graph.
 
 Directory structure
-project/
+SalesAnalytics
 │
 ├── docker-compose.yml
 │
 ├── mysql/
-│   └── init.sql
+│     └── init.sql
 │
 ├── analytics/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── app.py
+│     ├── Dockerfile
+│     ├── requirements.txt
+│     └── app.py
 │
 └── dashboard/
-    ├── Dockerfile
-    ├── requirements.txt
-    └── app.py
+      ├── Dockerfile
+      ├── requirements.txt
+      └── app.py
+
+
+Model:
+                   Docker Network
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│     +----------------+                                 │
+│     |    myysqldb    |                                 │
+│     |----------------|                                 │
+│     |  MySQL         |                                 │
+│     | sales table    |                                 │
+│     +--------+-------+                                 │
+│              |                                         │
+│      PyMySQL |                                         │
+│              |                                         │
+│     +--------v-------+       REST API                  │
+│     |   analytics    | <--------------------------+    │
+│     |----------------|                            |    │
+│     | Flask          |                            |    │
+│     | Pandas         |                            |    │
+│     | SQL GROUP BY   |                            |    │
+│     +--------+-------+                            |    │
+│              |                                    |    │
+│        JSON  |                                    |    │
+│              |                                    |    │
+│     +--------v-------+                            |    │
+│     |   dashboard    |----------------------------+    │
+│     |----------------|                                 │
+│     | Flask          |                                 │
+│     | requests       |                                 │
+│     | matplotlib     |                                 │
+│     +----------------+                                 │
+└─────────────────────────────────────────────────────────┘

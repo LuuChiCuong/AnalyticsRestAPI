@@ -4,7 +4,7 @@ CREATE TABLE sales(
     quantity INT
 );
 
-INSERT INTO sales VALUES
+/* INSERT INTO sales VALUES
 ('2026-06-01','Laptop',10),
 ('2026-06-01','Mouse',20),
 ('2026-06-01','Keyboard',15),
@@ -43,4 +43,4 @@ INSERT INTO sales VALUES
 
 ('2026-06-10','Laptop',11),
 ('2026-06-10','Mouse',12),
-('2026-06-10','Keyboard',13);
+('2026-06-10','Keyboard',13); */
